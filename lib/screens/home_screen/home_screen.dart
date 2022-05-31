@@ -15,28 +15,47 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
+    loader();
     Provider.of<UserProvider>(context, listen: false)
         .checkUserProfile(FirebaseAuth.instance.currentUser!.uid);
     super.initState();
   }
 
   final AuthService _authService = AuthService();
+  bool isLoading = true;
+
+  void loader() async {
+    Future.delayed(const Duration(milliseconds: 500)).then((value) {
+      setState(() {
+        isLoading = false;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     bool hasCompletedProfile =
         Provider.of<UserProvider>(context).checkIfProfileCompleted;
 
-    return hasCompletedProfile
-        ? Scaffold(
+    return isLoading
+        ? const Scaffold(
             body: Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  _authService.signOut();
-                },
-                child: const Text("Sign Out"),
+              child: CircularProgressIndicator(
+                color: Colors.green,
               ),
             ),
           )
-        : const CreateProfile();
+        : hasCompletedProfile
+            ? Scaffold(
+                body: Center(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      _authService.signOut();
+                    },
+                    child: const Text("Sign Out"),
+                  ),
+                ),
+              )
+            : const CreateProfileScreen();
   }
 }

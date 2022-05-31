@@ -5,9 +5,10 @@ class UserProvider extends ChangeNotifier {
   bool hasCompletedProfile = false;
 
   void checkUserProfile(String uid) async {
-    bool profile = await checkIfUserExists(uid);
+    bool profile = await DatabaseService().checkIfUserExists(uid);
 
     hasCompletedProfile = profile;
+    notifyListeners();
   }
 
   get checkIfProfileCompleted {
