@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:money_manager/providers/user_provider.dart';
 import 'package:money_manager/wrapper.dart';
 import 'package:provider/provider.dart';
 
@@ -36,6 +37,9 @@ class _MoneyManagerAppState extends State<MoneyManagerApp> {
             providers: [
               Provider<AuthService>(
                 create: (_) => AuthService(),
+              ),
+              ChangeNotifierProvider.value(
+                value: UserProvider(),
               ),
             ],
             child: const MaterialApp(
