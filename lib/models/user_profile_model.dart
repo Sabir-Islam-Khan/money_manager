@@ -38,7 +38,7 @@ class UserProfile {
       firstName: document["firstName"] ?? "",
       lastName: document["lastName"] ?? "",
       email: document["email"] ?? "",
-      uid: document["isApproved"] ?? "",
+      uid: document["uid"] ?? "",
       profilePicUrl: document["profilePicUrl"] ?? "",
       isApproved: document["isApproved"] ?? "",
     );
