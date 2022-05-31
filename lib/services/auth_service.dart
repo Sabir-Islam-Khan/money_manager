@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:money_manager/wrapper.dart';
 import '../screens/landing_page/landing_page.dart';
 import 'package:flutter/material.dart';
 import 'package:money_manager/models/user_model.dart';
@@ -68,6 +69,11 @@ class AuthService {
     try {
       final creds = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => const Wrapper(),
+        ),
+      );
       return _userFromFirebase(creds.user);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

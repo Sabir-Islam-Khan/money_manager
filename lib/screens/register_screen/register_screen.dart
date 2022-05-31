@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:money_manager/wrapper.dart';
 
 import 'package:provider/provider.dart';
 
@@ -30,12 +31,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
         : Scaffold(
             appBar: AppBar(
               elevation: 0.0,
+              backgroundColor: Colors.transparent,
               leading: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
                 },
                 child: const Icon(
                   Icons.arrow_back,
+                  color: Colors.black,
                 ),
               ),
             ),
@@ -58,7 +61,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       height: 7,
                     ),
                     Text(
-                      "Create an account to start using the GymChamp App.",
+                      "Create an account to start using the Money Manager",
                       style:
                           GoogleFonts.roboto(fontSize: 12, color: Colors.grey),
                     ),
@@ -159,20 +162,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: ElevatedButton(
                           child: const Text("Continue"),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.greenAccent,
+                            primary: Colors.green,
                           ),
                           onPressed: () {
                             isLoading = true;
 
-                            authService
-                                .createUserWithEmailAndPassword(
-                                    _emailController.text,
-                                    _passwordController.text,
-                                    context)
-                                .then((value) {
-                              authService.getUserUid();
-                              Navigator.pop(context);
-                            });
+                            authService.createUserWithEmailAndPassword(
+                                _emailController.text,
+                                _passwordController.text,
+                                context);
+
                             isLoading = false;
                           },
                         ),

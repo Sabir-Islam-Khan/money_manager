@@ -30,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
           )
         : Scaffold(
             appBar: AppBar(
+              backgroundColor: Colors.transparent,
               elevation: 0.0,
               leading: GestureDetector(
                 onTap: () {
@@ -37,6 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 child: const Icon(
                   Icons.arrow_back,
+                  color: Colors.black,
                 ),
               ),
             ),
@@ -177,7 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: ElevatedButton(
                           child: const Text("Continue"),
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.greenAccent,
+                            primary: Colors.green,
                           ),
                           onPressed: () {
                             if (_emailController.value.text.isEmpty ||
