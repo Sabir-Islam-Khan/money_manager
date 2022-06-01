@@ -9,6 +9,7 @@ class UserProfile {
   String? uid;
   String? profilePicUrl;
   bool? isApproved;
+  int? totalDue;
 
   UserProfile({
     @required this.username,
@@ -18,6 +19,7 @@ class UserProfile {
     @required this.uid,
     @required this.profilePicUrl,
     @required this.isApproved,
+    @required this.totalDue,
   });
 
   Map<String, dynamic> toMap() {
@@ -29,6 +31,7 @@ class UserProfile {
       'uid': uid,
       'profilePicUrl': profilePicUrl,
       'isApproved': isApproved,
+      'total_due': totalDue,
     };
   }
 
@@ -41,6 +44,7 @@ class UserProfile {
       uid: document["uid"] ?? "",
       profilePicUrl: document["profilePicUrl"] ?? "",
       isApproved: document["isApproved"] ?? "",
+      totalDue: document["total_due"] ?? 0,
     );
   }
 }
