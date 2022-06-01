@@ -42,6 +42,7 @@ class DatabaseService {
       uid: uid,
       profilePicUrl: url,
       isApproved: false,
+      totalDue: 0,
     );
 
     FirebaseFirestore.instance.collection("users").doc(uid).set(

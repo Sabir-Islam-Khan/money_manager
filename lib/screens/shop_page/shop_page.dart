@@ -1,6 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:money_manager/screens/shop_page/components/shop_bottom_modal.dart';
 
 class ShopPage extends StatefulWidget {
   String? shopName;
@@ -21,6 +22,16 @@ class _ShopPageState extends State<ShopPage> {
         centerTitle: true,
         title: Text(
           widget.shopName!,
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.green,
+        child: const Icon(Icons.add),
+        onPressed: () => showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return ShopBottomModal(uid: widget.shopId);
+          },
         ),
       ),
     );
