@@ -10,7 +10,12 @@ import '../../../providers/user_provider.dart';
 
 class ShopBottomModal extends StatefulWidget {
   String? uid;
-  ShopBottomModal({Key? key, @required this.uid}) : super(key: key);
+  int? shopDue;
+  ShopBottomModal({
+    Key? key,
+    @required this.uid,
+    @required this.shopDue,
+  }) : super(key: key);
 
   @override
   State<ShopBottomModal> createState() => _ShopBottomModalState();
@@ -19,6 +24,7 @@ class ShopBottomModal extends StatefulWidget {
 class _ShopBottomModalState extends State<ShopBottomModal> {
   final TextEditingController _money = TextEditingController();
   final TextEditingController _collection = TextEditingController();
+  final TextEditingController _note = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   @override
@@ -41,6 +47,47 @@ class _ShopBottomModalState extends State<ShopBottomModal> {
                 if (snapshot.hasData) {
                   return Column(
                     children: [
+                      Center(
+                        child: Container(
+                          margin: const EdgeInsets.only(
+                            right: 18.0,
+                            left: 18.0,
+                          ),
+                          padding: const EdgeInsets.only(left: 15),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[200],
+                            borderRadius: const BorderRadius.all(
+                              Radius.circular(5),
+                            ),
+                          ),
+                          height: 50,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "Note",
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              SizedBox(
+                                width: totalWidth * 0.5,
+                                child: TextFormField(
+                                  textInputAction: TextInputAction.next,
+                                  controller: _note,
+                                  decoration: const InputDecoration.collapsed(
+                                    hintText: "A note to remember.",
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 1,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
                       Center(
                         child: Container(
                           margin: const EdgeInsets.only(
@@ -89,7 +136,7 @@ class _ShopBottomModalState extends State<ShopBottomModal> {
                         ),
                         onPressed: () async {
                           int due = snapshot.data!["total_due"];
-
+                          int shopDue = widget.shopDue!;
                           int currentDue = int.parse(_money.value.text);
                           int dueToSet = due + currentDue;
                           log(
@@ -106,9 +153,21 @@ class _ShopBottomModalState extends State<ShopBottomModal> {
                             {
                               "amount": currentDue,
                               'timestamp': Timestamp.now(),
+                              "type": "due",
+                              "note": _note.value.text,
                             },
                           );
 
+                          FirebaseFirestore.instance
+                              .collection("users")
+                              .doc(_profile.uid)
+                              .collection("shops")
+                              .doc(widget.uid)
+                              .update(
+                            {
+                              "total_due": shopDue + currentDue,
+                            },
+                          );
                           FirebaseFirestore.instance
                               .collection("users")
                               .doc(_profile.uid)
@@ -185,7 +244,7 @@ class _ShopBottomModalState extends State<ShopBottomModal> {
                         ),
                         onPressed: () async {
                           int due = snapshot.data!["total_due"];
-
+                          int shopDue = widget.shopDue!;
                           int collection = int.parse(_collection.value.text);
                           int dueToSet = due - collection;
                           log(
@@ -202,9 +261,20 @@ class _ShopBottomModalState extends State<ShopBottomModal> {
                             {
                               "amount": collection,
                               'timestamp': Timestamp.now(),
+                              'type': "collection",
+                              "note": _note.value.text,
                             },
                           );
-
+                          FirebaseFirestore.instance
+                              .collection("users")
+                              .doc(_profile.uid)
+                              .collection("shops")
+                              .doc(widget.uid)
+                              .update(
+                            {
+                              "total_due": shopDue - collection,
+                            },
+                          );
                           FirebaseFirestore.instance
                               .collection("users")
                               .doc(_profile.uid)
